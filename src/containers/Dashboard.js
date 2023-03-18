@@ -131,18 +131,18 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
+    if (this.open === undefined) this.open = false
     if (this.index === undefined || this.index !== index) this.index = index
-    if (this.counter % 2 === 0) {
+    if (this.open === false) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
-      this.counter ++
+      this.open = true
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
-      this.counter ++
+      this.open = false
     }
 
     bills.forEach(bill => {
