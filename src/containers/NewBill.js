@@ -18,12 +18,13 @@ export default class NewBill {
 
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    const inputFile = this.document.querySelector(`input[data-testid="file"]`)
+    const input = this.document.querySelector(`input[data-testid="file"]`)
+    const file = input.files[0]
+    
     const fileTypesAllowed = ['image/jpeg', 'image/jpg', 'image/png']
-
     if(!fileTypesAllowed.includes(file.type)){
-      inputFile.value = ""
+      input.value = ""
+      return;
     }
     // -> ECRIRE LE TEST
     const filePath = e.target.value.split(/\\/g)
