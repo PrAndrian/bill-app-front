@@ -9,16 +9,23 @@ export default class NewBill {
     const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
     formNewBill.addEventListener("submit", this.handleSubmit)
     const file = this.document.querySelector(`input[data-testid="file"]`)
-    file.setAttribute("accept", ".jpg,.png,.jpeg")
     file.addEventListener("change", this.handleChangeFile)
     this.fileUrl = null
     this.fileName = null
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
+
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const inputFile = this.document.querySelector(`input[data-testid="file"]`)
+    const fileTypesAllowed = ['image/jpeg', 'image/jpg', 'image/png']
+
+    if(!fileTypesAllowed.includes(file.type)){
+      inputFile.value = ""
+    }
+    // -> ECRIRE LE TEST
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
