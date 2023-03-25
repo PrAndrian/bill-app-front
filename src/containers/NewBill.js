@@ -24,9 +24,8 @@ export default class NewBill {
     const fileTypesAllowed = ['image/jpeg', 'image/jpg', 'image/png']
     if(!fileTypesAllowed.includes(file.type)){
       input.value = ""
-      return;
+      return -1;
     }
-    // -> ECRIRE LE TEST
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
