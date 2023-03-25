@@ -85,14 +85,17 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
-  handleEditTicket(e, bill, bills) {
-    if ($('.dashboard-right-container > div').has('.dashboard-form').length === 0) {
+  handleEditTicket(e, bill, bills, index) {
+    if(this.index === undefined) this.index = index;     
+    if(this.open === undefined || this.index != index) this.open = false;   
+    if(this.open === false) {
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
+
     } else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
 
@@ -101,6 +104,10 @@ export default class {
       `)
       $('.vertical-navbar').css({ height: '120vh' })
     }
+
+    this.open = !this.open
+    console.log(this.open)
+
     $('#icon-eye-d').click(this.handleClickIconEye)
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
@@ -138,7 +145,7 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills, index))
     })
 
     return bills
