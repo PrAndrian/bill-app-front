@@ -5,7 +5,7 @@
 import { screen } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
-import { ROUTES, ROUTES_PATH } from "../constants/routes.js"
+import { ROUTES } from "../constants/routes.js"
 import mockStore from "../__mocks__/store.js"
 import { localStorageMock } from "../__mocks__/localStorage.js"
 
@@ -19,7 +19,6 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML = html
 
         //Simuler onNavigate
-        // const onNavigate = ROUTES(ROUTES_PATH['NewBill']) <--- test
         const onNavigate = (pathname) => {
           document.body.innerHTML = ROUTES({ pathname })
         }
@@ -66,14 +65,11 @@ describe("Given I am connected as an employee", () => {
         const html = NewBillUI()
         document.body.innerHTML = html
 
-        //Simuler onNavigate
         const onNavigate = (pathname) => {
           document.body.innerHTML = ROUTES({ pathname })
         }
-        //Simuler store
         const store = mockStore
 
-        //Crer un user 
         const userObj = {
           type:"Employee",
           email:"employee@test.tld",
@@ -81,14 +77,11 @@ describe("Given I am connected as an employee", () => {
           status:"connected"
         }
         
-        //Simuler localStore avec le user dedans 
         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
         window.localStorage.setItem('user', JSON.stringify(userObj))
 
-        //Création d'un nouveau NewBill grâce à @document, @onNavigate, @store, @localstore
         const aNewBill = new NewBill({document,onNavigate,store,locaStore: window.localStorage})
         
-        //récurépation de l'input de type file
         const fileInput = screen.getByTestId('file')
         
         //Création d'un fichier test en jpg
