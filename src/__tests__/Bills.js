@@ -44,9 +44,9 @@ describe("Given I am connected as an employee", () => {
     })
 
     describe("When click on eye-icon of a bill", ()=>{
-      it("should render a modal ",async()=>{
-        const html = BillsUI({ data: bills })
-        document.body.innerHTML = html
+      test("Then render a modal",async()=>{
+        document.body.innerHTML = BillsUI({ data: bills })
+        const eye_icons = screen.getAllByTestId("icon-eye")
 
         //Simuler onNavigate
         const onNavigate = (pathname) => {
@@ -54,31 +54,23 @@ describe("Given I am connected as an employee", () => {
         }
         //Simuler store
         const store = mockStore
-
         //Crer un user 
         const userObj = {
           type:"Employee",
         }
-        
         //Simuler localStore avec le user dedans 
         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
         window.localStorage.setItem('user', JSON.stringify(userObj))
 
         //Creation of Bills
-        const allBills = new Bills({document, onNavigate, store, localStorage })
-
-        //Création d'un event onChange
-        const event = new Event('click')
-
-        const eye_icon = screen.getAllByTestId("icon-eye")
-
-        eye_icon[0].dispatchEvent(event)
-
-        allBills.handleClickIconEye(eye_icon[0])
-
+        new Bills({document, onNavigate, store, localStorage })
         
+        const eventClick = new Event('click');
+        eye_icons[0].dispatchEvent(eventClick)
+                
         await waitFor(() =>{
-          expect(screen.getByText("Justificatif")).toBeTruthy() // <---[ A voir si si c'est bon ]
+          expect($('#modaleFile').find(".modal-body").innerHTML != '').toBe(true) // <---[ Verify si le justificatif est boen rendu dans le HTML ]
+          expect($('#modaleFile').css("display") != "none").toBeTruthy() // <---[ Verify si la modal est apparu ]
         })
       })
     })
