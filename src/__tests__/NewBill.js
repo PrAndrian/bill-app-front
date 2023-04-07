@@ -102,5 +102,24 @@ describe("Given I am connected as an employee", () => {
         expect(aNewBill.handleChangeFile(event)).toBe(-1)
       })
     })
+
+    // describe("When submit a new bill", () => {
+    //   test("Then date, amount (of money), TVA, Justificatif to not be null", () => {
+    //     localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "employee@test.tld" }));
+    //     const bill = {
+    //       email,
+    //       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
+    //       name:  e.target.querySelector(`input[data-testid="expense-name"]`).value,
+    //       amount: parseInt(e.target.querySelector(`input[data-testid="amount"]`).value),
+    //       date:  e.target.querySelector(`input[data-testid="datepicker"]`).value,
+    //       vat: e.target.querySelector(`input[data-testid="vat"]`).value,
+    //       pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
+    //       commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
+    //       fileUrl: this.fileUrl,
+    //       fileName: this.fileName,
+    //       status: 'pending'
+    //     }
+    //   })
+    // })
   })
 })
