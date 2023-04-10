@@ -2,12 +2,15 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
-import { ROUTES } from "../constants/routes.js"
-import mockStore from "../__mocks__/store.js"
+import { screen, waitFor } from "@testing-library/dom"
+// import userEvent from "@testing-library/user-event"
+import mockStore from "../__mocks__/store"
 import { localStorageMock } from "../__mocks__/localStorage.js"
+import { ROUTES_PATH } from "../constants/routes.js"
+import router from "../app/Router.js";
+
 
 jest.mock("../app/store", () => mockStore)
 
@@ -92,5 +95,66 @@ describe("Given I am connected as an employee", () => {
     })
 
     //Test d'intégration -> POST Ajouter Erreur 500
+    test("POST bill", async () => {
+      localStorage.setItem("user", JSON.stringify({ 
+        type: "Employee", 
+        email: "a@a" 
+      }));
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+      window.onNavigate(ROUTES_PATH.NewBill)
+      await waitFor(() => screen.getAllByText("Envoyer"))
+    })
+
+    describe("When an error occurs on API", () => {
+      test("post bill fails with 500 message error", async () => {
+        try{
+          jest.spyOn(mockStore, "bills")
+
+          Object.defineProperty(
+              window,
+              'localStorage',
+              { value: localStorageMock }
+          )
+  
+          window.localStorage.setItem('user', JSON.stringify({
+            type:"Employee",
+            email:"a@a",
+            password:"employee",
+            status:"connected"
+          }))
+  
+          window.onNavigate(ROUTES_PATH.NewBill)
+
+          const root = document.createElement("div")
+          root.setAttribute("id", "root")
+          document.body.appendChild(root)
+          router()
+          
+          const buttonSubmit = screen.getAllByText('Envoyer')  
+          buttonSubmit[0].click()
+          
+          mockStore.bills.mockImplementationOnce(() => {
+            return {
+              create : (bill) =>  {
+                return Promise.reject(new Error("Erreur 500"))
+              }
+            }
+          })
+  
+          await new Promise(process.nextTick);
+          const message = screen.queryByText(/Erreur 500/)
+          await waitFor(()=>{
+            expect(message).toBeTruthy()
+          })
+
+        }catch(error){
+          console.error(error);
+        }
+      })
+
+    })
   })
 })
