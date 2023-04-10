@@ -109,7 +109,7 @@ describe("Given I am connected as an employee", () => {
     })
 
     describe("When an error occurs on API", () => {
-      test("post bill fails with 500 message error", async () => {
+      test("POST bill fails with 500 message error", async () => {
         try{
           jest.spyOn(mockStore, "bills")
 
@@ -127,7 +127,7 @@ describe("Given I am connected as an employee", () => {
           }))
   
           window.onNavigate(ROUTES_PATH.NewBill)
-
+          
           const root = document.createElement("div")
           root.setAttribute("id", "root")
           document.body.appendChild(root)
@@ -143,7 +143,8 @@ describe("Given I am connected as an employee", () => {
               }
             }
           })
-  
+          
+          window.onNavigate(ROUTES_PATH.NewBill)
           await new Promise(process.nextTick);
           const message = screen.queryByText(/Erreur 500/)
           await waitFor(()=>{
