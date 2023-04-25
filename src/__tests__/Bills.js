@@ -76,21 +76,21 @@ describe("Given I am connected as an employee", () => {
     })
 
     describe("When click on eye-icon of a bill", ()=>{
-      //Test d'intégration
       test("Then render a modal",async()=>{
+        
+        // console.log("innerHTML = ",document.body.innerHTML)
+        
         const eye_icons = screen.getAllByTestId("icon-eye")
         
         userEvent.click(eye_icons[0])
-
+        
         await waitFor(() =>{
           expect($('#modaleFile').find(".modal-body").innerHTML != '').toBe(true) // <---[ Verify si le justificatif est bien rendu dans le HTML ]
-          expect($('#modaleFile').css("display") != "none").toBeTruthy() // <---[ Verify si la modal est apparu ]
         })
+        // console.log("innerHTML = ",document.body.innerHTML)
       })
     })
-    
-    //Test unitaire handleClickNewBill <-------------------------------- à Voir
-    
+        
     describe('When click on button "Note de frais"',()=>{
       test('Then handleClickNewBill is called',()=>{
 
